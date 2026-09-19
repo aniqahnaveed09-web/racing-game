@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Neon Rush — Top-Down Racer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="game-wrap">
+
+    <!-- HUD -->
+    <div id="hud">
+      <div class="hud-block">
+        <span class="hud-label">Score</span>
+        <span class="hud-value" id="score-value">0</span>
+      </div>
+      <div class="hud-block">
+        <span class="hud-label">Best</span>
+        <span class="hud-value" id="best-value">0</span>
+      </div>
+      <div class="hud-block speed-block">
+        <span class="hud-label">Speed</span>
+        <div class="speed-bar"><div class="speed-fill" id="speed-fill"></div></div>
+      </div>
+    </div>
+
+    <!-- Game canvas -->
+    <canvas id="game-canvas" width="480" height="720"></canvas>
+
+    <!-- Start screen -->
+    <div class="overlay" id="start-screen">
+      <div class="overlay-panel">
+        <h1 class="title">NEON<span>RUSH</span></h1>
+        <p class="subtitle">a top-down arcade racer</p>
+        <div class="instructions">
+          <div class="instr-row"><span class="key">&#8592; &#8594; / A D</span> steer</div>
+          <div class="instr-row"><span class="key">&#8593; / W</span> accelerate</div>
+          <div class="instr-row"><span class="key">&#8595; / S</span> brake</div>
+        </div>
+        <button class="arcade-btn" id="start-btn">Start Game</button>
+      </div>
+    </div>
+
+    <!-- Game over screen -->
+    <div class="overlay hidden" id="gameover-screen">
+      <div class="overlay-panel">
+        <h1 class="title crash">WRECKED</h1>
+        <p class="final-score-label">Final Score</p>
+        <p class="final-score" id="final-score">0</p>
+        <p class="new-best hidden" id="new-best-msg">New Best!</p>
+        <button class="arcade-btn" id="restart-btn">Restart</button>
+      </div>
+    </div>
+
+    <!-- Mobile touch controls -->
+    <div id="touch-controls">
+      <div class="touch-side">
+        <button class="touch-btn" id="btn-left" aria-label="Steer left">&#8592;</button>
+        <button class="touch-btn" id="btn-right" aria-label="Steer right">&#8594;</button>
+      </div>
+      <div class="touch-side">
+        <button class="touch-btn" id="btn-brake" aria-label="Brake">&#8595;</button>
+        <button class="touch-btn" id="btn-gas" aria-label="Accelerate">&#8593;</button>
+      </div>
+    </div>
+
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>

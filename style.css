@@ -1,0 +1,311 @@
+:root {
+  --bg-deep: #0a0e17;
+  --bg-panel: #121826;
+  --road-line: #2a3245;
+  --neon-cyan: #4deaff;
+  --neon-magenta: #ff3d9a;
+  --neon-amber: #ffcb47;
+  --text-soft: #b9c2d6;
+  --text-bright: #f2f5fb;
+  --danger: #ff4d5e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-deep);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(77, 234, 255, 0.06), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(255, 61, 154, 0.06), transparent 40%);
+  color: var(--text-bright);
+  font-family: 'Chakra Petch', sans-serif;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+#game-wrap {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* ---------- HUD ---------- */
+
+#hud {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(480px, 94vw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  background: rgba(18, 24, 38, 0.75);
+  border: 1px solid rgba(77, 234, 255, 0.25);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  z-index: 5;
+}
+
+.hud-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 58px;
+}
+
+.hud-label {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  font-family: 'Press Start 2P', monospace;
+}
+
+.hud-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 0 0 10px rgba(77, 234, 255, 0.5);
+}
+
+.speed-block {
+  flex: 1;
+  align-items: stretch;
+  min-width: 90px;
+}
+
+.speed-bar {
+  margin-top: 6px;
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.speed-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+  transition: width 0.08s linear;
+}
+
+/* ---------- Canvas ---------- */
+
+#game-canvas {
+  display: block;
+  border-radius: 14px;
+  border: 2px solid rgba(77, 234, 255, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.4),
+    0 20px 60px rgba(0,0,0,0.55),
+    0 0 40px rgba(77, 234, 255, 0.08) inset;
+  max-width: 94vw;
+  max-height: 78dvh;
+  width: auto;
+  height: 78dvh;
+  aspect-ratio: 2 / 3;
+  background: #10151f;
+}
+
+/* ---------- Overlays ---------- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 9, 16, 0.86);
+  backdrop-filter: blur(3px);
+  z-index: 10;
+  transition: opacity 0.2s ease;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay-panel {
+  width: min(360px, 88vw);
+  padding: 32px 26px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(24, 31, 48, 0.95), rgba(14, 19, 31, 0.95));
+  border: 1px solid rgba(77, 234, 255, 0.25);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 26px;
+  line-height: 1.5;
+  color: var(--text-bright);
+  letter-spacing: 1px;
+}
+
+.title span {
+  display: block;
+  color: var(--neon-magenta);
+  text-shadow: 0 0 18px rgba(255, 61, 154, 0.6);
+}
+
+.title.crash {
+  color: var(--danger);
+  text-shadow: 0 0 18px rgba(255, 77, 94, 0.6);
+  font-size: 22px;
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-soft);
+  letter-spacing: 0.5px;
+}
+
+.instructions {
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.instr-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.key {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(77, 234, 255, 0.1);
+  border: 1px solid rgba(77, 234, 255, 0.35);
+  color: var(--neon-cyan);
+  white-space: nowrap;
+}
+
+.arcade-btn {
+  margin-top: 10px;
+  padding: 14px 26px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: #0a0e17;
+  background: var(--neon-cyan);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(77, 234, 255, 0.45);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.arcade-btn:hover {
+  box-shadow: 0 0 32px rgba(77, 234, 255, 0.7);
+}
+
+.arcade-btn:active {
+  transform: scale(0.96);
+}
+
+.final-score-label {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--text-soft);
+  letter-spacing: 1px;
+}
+
+.final-score {
+  margin-top: 6px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 32px;
+  color: var(--neon-amber);
+  text-shadow: 0 0 16px rgba(255, 203, 71, 0.5);
+}
+
+.new-best {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--neon-magenta);
+  font-family: 'Press Start 2P', monospace;
+}
+
+.new-best.hidden {
+  display: none;
+}
+
+/* ---------- Touch controls ---------- */
+
+#touch-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(480px, 94vw);
+  display: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.touch-side {
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.touch-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1px solid rgba(77, 234, 255, 0.35);
+  background: rgba(18, 24, 38, 0.8);
+  color: var(--neon-cyan);
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.touch-btn:active {
+  background: rgba(77, 234, 255, 0.25);
+}
+
+/* Show touch controls on touch-capable / narrow devices */
+@media (hover: none) and (pointer: coarse) {
+  #touch-controls {
+    display: flex;
+  }
+  #game-canvas {
+    height: 62dvh;
+  }
+}
+
+@media (max-width: 420px) {
+  .hud-value {
+    font-size: 16px;
+  }
+  .hud-label {
+    font-size: 8px;
+  }
+}
